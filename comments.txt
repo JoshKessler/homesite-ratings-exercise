@@ -1,0 +1,7 @@
+I wanted to mention a few choices that I made specifically because this application was developed as an exercise. 
+
+In a customer-facing application, I would customize error messages for different kinds of invalid inputs, and I would make them more user-friendly (e.g., I would not send the user the regex validation for roof type).
+
+In a project that I expected to build on, I would include more testing. For this project, manually testing during development via print statements seemed sufficient.
+
+I took a simplistic approach to choosing an endpoint and formatting the response, but if more people were going to use an application, I would standardize a return format and use more descriptive names of endpoints.
