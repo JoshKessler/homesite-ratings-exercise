@@ -78,3 +78,22 @@ def calculate_raw_premium(base, dwelling_cvg_factor, age_factor, roof_factor,
 def apply_discount(base_premium):
     """Returns premium with discount applied"""
     return base_premium * (1 - DISCOUNT_RATE)
+
+
+def handle_json_data(data):
+    """Given properly formatted JSON body with coverage, age, roof type,
+    number of units, and possible discount, returns a quote premium rounded to
+    the nearest dollar value"""
+    base = BASE_PREMIUM
+    dwelling_cvg_factor = calculate_coverage_factor(
+        data.get("DwellingCoverage"))
+    age_factor = get_age_factor(data.get("HomeAge"))
+    roof_factor = ROOF_TYPE_FACTOR.get(data.get("RoofType"))
+    units_factor = NUM_UNITS_FACTOR.get(data.get("NumberOfUnits"))
+    undiscounted_premium = calculate_raw_premium(
+        base, dwelling_cvg_factor, age_factor, roof_factor, units_factor)
+    if data.get("PartnerDiscount") == "Y":
+        unrounded_value = apply_discount(undiscounted_premium)
+    else:
+        unrounded_value = undiscounted_premium
+    return f"${round(unrounded_value)}"
