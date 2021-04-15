@@ -55,3 +55,26 @@ def _interpolate_coverage_equation():
     intercept = y_avg - (slope * x_avg)
     global COVERAGE_EQ_SLOPE, COVERAGE_EQ_INTERCEPT
     COVERAGE_EQ_SLOPE, COVERAGE_EQ_INTERCEPT = slope, intercept
+
+
+def calculate_coverage_factor(dwelling_cvg_amt):
+    """Returns coverage factor for a given coverage amount, using either
+    an exact match in the table or by interpolating it."""
+    exact_match = DWELLING_COVERAGE_FACTOR.get(dwelling_cvg_amt)
+    if exact_match:
+        return exact_match
+    else:
+        if COVERAGE_EQ_INTERCEPT is None:
+            _interpolate_coverage_equation()
+        return (COVERAGE_EQ_SLOPE * dwelling_cvg_amt) + COVERAGE_EQ_INTERCEPT
+
+
+def calculate_raw_premium(base, dwelling_cvg_factor, age_factor, roof_factor,
+                          units_factor):
+    """Returns premium based on all possible factors except discount."""
+    return base * dwelling_cvg_factor * age_factor * roof_factor * units_factor
+
+
+def apply_discount(base_premium):
+    """Returns premium with discount applied"""
+    return base_premium * (1 - DISCOUNT_RATE)
