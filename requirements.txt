@@ -1,0 +1,2 @@
+flask==1.1.2
+flask-expects-json==1.5.0
